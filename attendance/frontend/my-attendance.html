@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Attendance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h2>COMPILE CREW</h2>
+        <p>My Attendance Records</p>
+    </header>
+
+    <main>
+        <h1>My Attendance</h1>
+
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="attendanceTable">
+                <tr>
+                    <td colspan="2">Loading attendance...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p id="message"></p>
+
+        <br>
+        <button onclick="location.href='student-dashboard.html'">
+            Back to Dashboard
+        </button>
+    </main>
+
+    <script>
+        const studentData = sessionStorage.getItem("loggedInStudent");
+        const table = document.getElementById("attendanceTable");
+        const message = document.getElementById("message");
+
+        async function loadAttendance() {
+
+            if (!studentData) {
+                window.location.href = "student-login.html";
+                return;
+            }
+
+            const student = JSON.parse(studentData);
+
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:8080/api/attendance/student/" + student.id
+                );
+
+                if (!response.ok) {
+                    throw new Error("Unable to load attendance");
+                }
+
+                const records = await response.json();
+
+                table.innerHTML = "";
+
+                if (records.length === 0) {
+                    table.innerHTML =
+                        '<tr><td colspan="2">No attendance records found.</td></tr>';
+                    return;
+                }
+
+                records.forEach(record => {
+
+                    const row = document.createElement("tr");
+
+                    const dateCell = document.createElement("td");
+                    dateCell.textContent = record.attendanceDate;
+
+                    const statusCell = document.createElement("td");
+                    statusCell.textContent = record.status;
+
+                    row.appendChild(dateCell);
+                    row.appendChild(statusCell);
+
+                    table.appendChild(row);
+                });
+
+            } catch (error) {
+                table.innerHTML =
+                    '<tr><td colspan="2">Failed to load attendance.</td></tr>';
+
+                message.textContent = error.message;
+            }
+        }
+
+        loadAttendance();
+    </script>
+
+</body>
+</html>

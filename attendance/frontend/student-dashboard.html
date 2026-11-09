@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h2>COMPILE CREW</h2>
+        <p>Student Dashboard</p>
+    </header>
+
+    <main>
+        <h1 id="welcomeMessage">Welcome, Student!</h1>
+        <p>Student Attendance Management System</p>
+
+        <section class="card">
+            <h2>My Profile</h2>
+            <p><b>Name:</b> <span id="studentName"></span></p>
+            <p><b>Roll Number:</b> <span id="rollNumber"></span></p>
+            <p><b>Email:</b> <span id="email"></span></p>
+            <p><b>Department:</b> <span id="department"></span></p>
+            <p><b>Section:</b> <span id="section"></span></p>
+        </section>
+
+        <section class="dashboard">
+
+            <div class="card">
+                <h3>My Attendance</h3>
+                <p>View your daily attendance records.</p>
+                <button onclick="location.href='my-attendance.html'">Open</button>
+
+            <div class="card">
+                <h3>Attendance Percentage</h3>
+                <p>Check your overall attendance percentage.</p>
+                <button onclick="alert('Attendance Percentage')">Open</button>
+            </div>
+
+            <div class="card">
+                <h3>Correction Request</h3>
+                <p>Submit a request to correct attendance.</p>
+                <button onclick="alert('Correction Request')">Open</button>
+            </div>
+
+            <div class="card">
+                <h3>Request Status</h3>
+                <p>Track your correction request status.</p>
+                <button onclick="alert('Request Status')">Open</button>
+            </div>
+
+        </section>
+
+        <button onclick="logout()">Logout</button>
+    </main>
+
+    <script>
+        const studentData = sessionStorage.getItem("loggedInStudent");
+
+        if (!studentData) {
+            window.location.href = "student-login.html";
+        } else {
+            const student = JSON.parse(studentData);
+
+            document.getElementById("welcomeMessage").textContent =
+                "Welcome, " + student.name + "!";
+
+            document.getElementById("studentName").textContent =
+                student.name;
+
+            document.getElementById("rollNumber").textContent =
+                student.rollNumber;
+
+            document.getElementById("email").textContent =
+                student.email;
+
+            document.getElementById("department").textContent =
+                student.department;
+
+            document.getElementById("section").textContent =
+                student.section;
+        }
+
+        function logout() {
+            sessionStorage.removeItem("loggedInStudent");
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>

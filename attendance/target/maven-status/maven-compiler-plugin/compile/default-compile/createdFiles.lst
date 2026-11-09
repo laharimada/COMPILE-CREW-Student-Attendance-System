@@ -1,0 +1,8 @@
+com\compilecrew\attendance\config\PasswordConfig.class
+com\compilecrew\attendance\config\CorsConfig.class
+com\compilecrew\attendance\entity\Attendance.class
+com\compilecrew\attendance\entity\Student.class
+com\compilecrew\attendance\AttendanceApplication.class
+com\compilecrew\attendance\repository\StudentRepository.class
+com\compilecrew\attendance\repository\AttendanceRepository.class
+com\compilecrew\attendance\controller\StudentController.class

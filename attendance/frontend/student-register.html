@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="welcome">
+        <h1>Student Registration</h1>
+        <p>Create your student account</p>
+
+        <div class="card">
+            <form id="studentRegisterForm">
+
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="text" id="rollNumber" placeholder="Roll Number" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="text" id="department" placeholder="Department" required>
+                <input type="text" id="section" placeholder="Section" required>
+                <input type="password" id="password" placeholder="Create Password" required>
+                <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+                <button type="submit">Create Account</button>
+
+            </form>
+
+            <p id="message"></p>
+
+            <p>Already registered?
+                <a href="student-login.html">Login Here</a>
+            </p>
+
+            <a href="index.html">Back to Home</a>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById("studentRegisterForm")
+            .addEventListener("submit", async function(event) {
+
+                event.preventDefault();
+
+                const student = {
+                    name: document.getElementById("name").value,
+                    rollNumber: document.getElementById("rollNumber").value,
+                    email: document.getElementById("email").value,
+                    department: document.getElementById("department").value,
+                    section: document.getElementById("section").value,
+                    password: document.getElementById("password").value,
+                    confirmPassword: document.getElementById("confirmPassword").value
+                };
+
+                const message = document.getElementById("message");
+
+                try {
+                    const response = await fetch("http://localhost:8080/api/students/register", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(student)
+                    });
+
+                    const result = await response.json();
+
+                    message.textContent = result.message;
+
+                    if (response.ok) {
+                        message.style.color = "green";
+                        document.getElementById("studentRegisterForm").reset();
+                    } else {
+                        message.style.color = "red";
+                    }
+
+                } catch (error) {
+                    message.textContent = "Server connection failed. Please try again.";
+                    message.style.color = "red";
+                }
+            });
+    </script>
+
+</body>
+</html>
